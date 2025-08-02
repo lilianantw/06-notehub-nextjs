@@ -45,5 +45,3 @@ export default function NoteModal({ onClose, onSuccess }: NoteModalProps) {
     document.body
   );
 }
-
-

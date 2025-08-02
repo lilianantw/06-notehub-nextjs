@@ -1,17 +1,16 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { fetchNotes } from "@/lib/api";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useDebounce } from "use-debounce";
+import { useState } from 'react';
+import { fetchNotes } from '@/lib/api';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useDebounce } from 'use-debounce';
 
-import NoteList from "@/components/NoteList/NoteList";
-import NoteModal from "@/components/NoteModal/NoteModal";
-import SearchBox from "@/components/SearchBox/SearchBox";
-import Pagination from "@/components/Pagination/Pagination";
-import type { NotesResponse } from "@/types/api";
-import css from "./NotesPage.module.css";
-
+import NoteList from '@/components/NoteList/NoteList';
+import NoteModal from '@/components/Modal/NoteModal';
+import SearchBox from '@/components/SearchBox/SearchBox';
+import Pagination from '@/components/Pagination/Pagination';
+import type { NotesResponse } from '@/types/api';
+import css from './NotesPage.module.css';
 
 type NotesClientProps = {
   initialPage: number;
@@ -31,7 +30,7 @@ export default function NotesClient({
   const perPage = 12;
 
   const { data } = useQuery<NotesResponse>({
-    queryKey: ["notes", debounceSearchTerm, currentPage],
+    queryKey: ['notes', debounceSearchTerm, currentPage],
     queryFn: () => fetchNotes(currentPage, debounceSearchTerm, perPage),
     placeholderData: keepPreviousData,
     initialData:
@@ -64,10 +63,7 @@ export default function NotesClient({
         </button>
       </header>
       {data && <NoteList notes={data.notes} />}
-      {isModalOpen && (
-        <NoteModal onClose={closeModal} onSuccess={closeModal} />
-      )}
+      {isModalOpen && <NoteModal onClose={closeModal} onSuccess={closeModal} />}
     </div>
   );
 }
-
