@@ -7,11 +7,11 @@ const Footer = () => {
       <div className={css.content}>
         <p>© {new Date().getFullYear()} NoteHub. All rights reserved.</p>
         <div className={css.wrap}>
-          <p>Developer: Vitalii Obukh</p>
+          <p>Developer: Liliana Toiunda</p>
           <p>
             Contact us:
             <Link href="<mailto:student@notehub.app>">
-              Psiholog211@gmail.com
+              liliana.ntw@gmail.com
             </Link>
           </p>
         </div>
