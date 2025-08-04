@@ -23,8 +23,8 @@ const api = axios.create({
 });
 
 // Отримання всіх нотаток (без пагінації — по завданню)
-export async function fetchNotes(): Promise<Note[]> {
-  const response = await api.get<Note[]>("/notes");
+export async function fetchNotes(): Promise<FetchNotesResponse> {
+  const response = await api.get<FetchNotesResponse>("/notes");
   return response.data;
 }
 

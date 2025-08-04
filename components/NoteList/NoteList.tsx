@@ -22,7 +22,6 @@ function NoteList({ notes }: NoteListProps) {
     </ul>
   );
 }
-
 export default function NotesClient() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["notes"],
@@ -36,8 +35,8 @@ export default function NotesClient() {
   return (
     <section className={css.section}>
       <h1 className={css.title}>Notes List</h1>
-      {data && data.length > 0 ? (
-        <NoteList notes={data} />
+      {data && data.notes.length > 0 ? (
+        <NoteList notes={data.notes} />
       ) : (
         <p>No notes available.</p>
       )}
