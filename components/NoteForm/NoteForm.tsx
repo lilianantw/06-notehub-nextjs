@@ -1,11 +1,11 @@
 // src/components/NoteForm/NoteForm.tsx
-import React from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import { createNote } from '../../services/noteService';
-import { type NoteTag } from '../../types/note';
-import css from './NoteForm.module.css';
+import React from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { createNote } from "@/lib/api";
+import { type NoteTag } from "../../types/note";
+import css from "./NoteForm.module.css";
 
 // Інтерфейс пропсів
 interface NoteFormProps {
@@ -15,13 +15,13 @@ interface NoteFormProps {
 // Схема валідації
 const validationSchema = Yup.object({
   title: Yup.string()
-    .min(3, 'Title must be at least 3 characters')
-    .max(50, 'Title must be at most 50 characters')
-    .required('Title is required'),
-  content: Yup.string().max(500, 'Content must be at most 500 characters'),
+    .min(3, "Title must be at least 3 characters")
+    .max(50, "Title must be at most 50 characters")
+    .required("Title is required"),
+  content: Yup.string().max(500, "Content must be at most 500 characters"),
   tag: Yup.string()
-    .oneOf(['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'], 'Invalid tag')
-    .required('Tag is required'),
+    .oneOf(["Todo", "Work", "Personal", "Meeting", "Shopping"], "Invalid tag")
+    .required("Tag is required"),
 });
 
 // Форма створення нотатки
@@ -32,14 +32,14 @@ const NoteForm: React.FC<NoteFormProps> = ({ onClose }) => {
   const createMutation = useMutation({
     mutationFn: createNote,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notes'] });
+      queryClient.invalidateQueries({ queryKey: ["notes"] });
       onClose();
     },
   });
 
   return (
     <Formik
-      initialValues={{ title: '', content: '', tag: '' as NoteTag }}
+      initialValues={{ title: "", content: "", tag: "" as NoteTag }}
       validationSchema={validationSchema}
       onSubmit={(values) => createMutation.mutate(values)}
     >
@@ -60,7 +60,11 @@ const NoteForm: React.FC<NoteFormProps> = ({ onClose }) => {
               rows="8"
               className={css.textarea}
             />
-            <ErrorMessage name="content" component="span" className={css.error} />
+            <ErrorMessage
+              name="content"
+              component="span"
+              className={css.error}
+            />
           </div>
 
           <div className={css.formGroup}>
@@ -79,7 +83,11 @@ const NoteForm: React.FC<NoteFormProps> = ({ onClose }) => {
           </div>
 
           <div className={css.actions}>
-            <button type="button" className={css.cancelButton} onClick={onClose}>
+            <button
+              type="button"
+              className={css.cancelButton}
+              onClick={onClose}
+            >
               Cancel
             </button>
             <button

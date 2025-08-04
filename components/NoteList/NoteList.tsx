@@ -1,50 +1,46 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteNote } from "@/lib/api";
-import { type Note } from "../../types/note";
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { fetchNotes } from "@/lib/api";
+import type { Note } from "@/types/note";
 import css from "./NoteList.module.css";
 
-interface NoteListProps {
+type NoteListProps = {
   notes: Note[];
-}
+};
 
-export default function NoteList({ notes }: NoteListProps) {
-  const queryClient = useQueryClient();
-
-  const deleteMutation = useMutation({
-    mutationFn: deleteNote,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notes"] });
-    },
-  });
-
-  const handleDelete = (id: number) => {
-    deleteMutation.mutate(id);
-  };
-
+function NoteList({ notes }: NoteListProps) {
   return (
-    <ul className={css.list}>
+    <ul>
       {notes.map((note) => (
-        <li key={note.id} className={css.listItem}>
-          <h2 className={css.title}>{note.title}</h2>
-          <p className={css.content}>{note.content}</p>
-          <div className={css.footer}>
-            <span className={css.tag}>{note.tag}</span>
-            <Link href={`/notes/${note.id}`} className={css.viewLink}>
-              View details
-            </Link>
-            <button
-              className={css.button}
-              onClick={() => handleDelete(note.id)}
-              disabled={deleteMutation.isPending}
-            >
-              Delete
-            </button>
-          </div>
+        <li key={note.id}>
+          <h3>{note.title}</h3>
+          <Link href={`/notes/${note.id}`}>View details</Link>
         </li>
       ))}
     </ul>
+  );
+}
+
+export default function NotesClient() {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["notes"],
+    queryFn: fetchNotes,
+  });
+
+  if (isLoading) return <p>Loading, please wait...</p>;
+  if (error)
+    return <p>Could not fetch the list of notes. {(error as Error).message}</p>;
+
+  return (
+    <section className={css.section}>
+      <h1 className={css.title}>Notes List</h1>
+      {data && data.length > 0 ? (
+        <NoteList notes={data} />
+      ) : (
+        <p>No notes available.</p>
+      )}
+    </section>
   );
 }

@@ -10,14 +10,17 @@ export default function NotesClient() {
     queryKey: ["notes"],
     queryFn: fetchNotes,
   });
-
+  if (error) {
+    console.error("Fetch error:", error);
+    throw error;
+  }
   if (isLoading) return <p>Loading, please wait...</p>;
-  if (error) return <p>Could not fetch the list of notes. {error.message}</p>;
+  // if (error) return <p>Could not fetch the list of notes. {error.message}</p>;
 
   return (
     <section className={css.section}>
       <h1 className={css.title}>Notes List</h1>
-      {data && data.length > 0 && <NoteList notes={data} />}
+      {data?.notes?.length > 0 && <NoteList notes={data.notes} />}
     </section>
   );
 }
