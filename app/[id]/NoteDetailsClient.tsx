@@ -8,12 +8,21 @@ export default function NoteDetailsClient() {
   const { id } = useParams();
   const noteId = Number(id);
 
-  const { note, isLoading, error } = useQuery({
+  const {
+    data: note,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["note", noteId],
     queryFn: () => fetchNoteById(noteId),
+    enabled: !!noteId && !isNaN(noteId),
   });
 
-  if (isLoading) return <p>Loading please wait...</p>;
+  if (!noteId || isNaN(noteId)) {
+    return <p>Something went wrong.</p>;
+  }
+
+  if (isLoading) return <p>Loading, please wait...</p>;
   if (error || !note) return <p>Something went wrong.</p>;
 
   return (
@@ -23,9 +32,7 @@ export default function NoteDetailsClient() {
           <h2>{note.title}</h2>
         </div>
         <p className={css.content}>{note.content}</p>
-        <p className={css.date}>
-          {new Date(note.createdAt).toLocaleDateString()}
-        </p>
+        <p className={css.date}>{note.createdAt.slice(0, 10)}</p>
       </div>
     </div>
   );

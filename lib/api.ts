@@ -16,10 +16,12 @@ export interface CreateNotePayload {
 }
 
 // Екземпляр axios
+const API_BASE_URL = "https://notehub-public.goit.study/api";
+const TOKEN = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 const api = axios.create({
-  baseURL: "https://notehub-public.goit.study/api", // ✅ Убраны пробелы
+  baseURL: "https://notehub-public.goit.study/api",
   headers: {
-    Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`,
+    Authorization: `Bearer ${TOKEN}`,
   },
 });
 

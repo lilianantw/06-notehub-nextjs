@@ -2,18 +2,16 @@ import React from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteNote } from "@/lib/api";
 import { type Note } from "../../types/note";
+import Link from "next/link";
 import css from "./NoteList.module.css";
 
-// Інтерфейс пропсів
 interface NoteListProps {
   notes: Note[];
 }
 
-// Список нотаток
-const NoteList: React.FC<NoteListProps> = ({ notes }) => {
+const NoteList = ({ notes }: NoteListProps) => {
   const queryClient = useQueryClient();
 
-  // Мутація для видалення
   const deleteMutation = useMutation({
     mutationFn: deleteNote,
     onSuccess: () => {
@@ -21,7 +19,6 @@ const NoteList: React.FC<NoteListProps> = ({ notes }) => {
     },
   });
 
-  // Обробка видалення
   const handleDelete = (id: number) => {
     deleteMutation.mutate(id);
   };
@@ -34,6 +31,9 @@ const NoteList: React.FC<NoteListProps> = ({ notes }) => {
           <p className={css.content}>{note.content}</p>
           <div className={css.footer}>
             <span className={css.tag}>{note.tag}</span>
+            <Link href={`/notes/${note.id}`} className={css.viewLink}>
+              View details
+            </Link>
             <button
               className={css.button}
               onClick={() => handleDelete(note.id)}

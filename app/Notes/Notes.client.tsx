@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { fetchNotes } from "@/lib/api";
-import NoteList from "@/components/NoteList";
+import NoteList from "@/components/NoteList/NoteList";
 import css from "./NotesPage.module.css";
 
 export default function NotesClient() {
