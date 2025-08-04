@@ -17,9 +17,9 @@ export interface CreateNotePayload {
 
 // Екземпляр axios
 const api = axios.create({
-  baseURL: "https://notehub-public.goit.study/api",
+  baseURL: "https://notehub-public.goit.study/api", // ✅ Убраны пробелы
   headers: {
-    Authorization: `Bearer ${import.meta.env.VITE_NOTEHUB_TOKEN}`,
+    Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`,
   },
 });
 
@@ -27,23 +27,29 @@ const api = axios.create({
 export async function fetchNotes(
   page: number = 1,
   perPage: number = 12,
-  search?: string // Зроблено опціональним, щоб не передавати порожній рядок
+  search?: string
 ): Promise<FetchNotesResponse> {
   const params: Record<string, string | number> = {
     page,
-    perPage,
+    limit: perPage,
   };
 
-  // Додаємо search лише якщо він не порожній
+  // Додаємо пошук за заголовком
   if (search && search.trim() !== "") {
-    params.search = search.trim();
+    params.title = search.trim();
   }
 
-  const response: AxiosResponse<FetchNotesResponse> = await api.get("/notes", {
-    params,
-  });
-
-  return response.data;
+  try {
+    const response = await api.get<FetchNotesResponse>("/notes", { params });
+    return {
+      notes: response.data.notes,
+      totalPages:
+        Math.ceil(Number(response.headers["x-total-count"]) / perPage) || 1,
+    };
+  } catch (error) {
+    console.error("Failed to fetch notes:", error);
+    throw error;
+  }
 }
 
 // Створення нотатки
@@ -55,5 +61,11 @@ export async function createNote(payload: CreateNotePayload): Promise<Note> {
 // Видалення нотатки
 export async function deleteNote(id: number): Promise<Note> {
   const response: AxiosResponse<Note> = await api.delete(`/notes/${id}`);
+  return response.data;
+}
+
+// Отримання нотатки за ID
+export async function fetchNoteById(id: number): Promise<Note> {
+  const response: AxiosResponse<Note> = await api.get(`/notes/${id}`);
   return response.data;
 }

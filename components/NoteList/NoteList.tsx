@@ -1,8 +1,8 @@
-import React from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteNote } from '../../services/noteService';
-import { type Note } from '../../types/note';
-import css from './NoteList.module.css';
+import React from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteNote } from "@/lib/api";
+import { type Note } from "../../types/note";
+import css from "./NoteList.module.css";
 
 // Інтерфейс пропсів
 interface NoteListProps {
@@ -17,7 +17,7 @@ const NoteList: React.FC<NoteListProps> = ({ notes }) => {
   const deleteMutation = useMutation({
     mutationFn: deleteNote,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notes'] });
+      queryClient.invalidateQueries({ queryKey: ["notes"] });
     },
   });
 
