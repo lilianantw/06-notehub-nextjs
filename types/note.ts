@@ -1,7 +1,7 @@
 // Типи для нотаток
 
 // Тип для тегів
-export type NoteTag = 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
+export type NoteTag = "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
 
 // Інтерфейс для нотатки
 export interface Note {
@@ -11,4 +11,18 @@ export interface Note {
   createdAt: string; // Дата створення (ISO-рядок)
   updatedAt: string; // Дата оновлення (ISO-рядок)
   tag: NoteTag; // Тег
+}
+export interface NotesResponse {
+  notes: Note[];
+  totalPages: number;
+}
+
+export interface UpdateNoteData {
+  title?: string;
+  content?: string;
+}
+
+export interface CreateNoteData {
+  title: string;
+  content: string;
 }

@@ -6,11 +6,7 @@ import NoteList from "@/components/NoteList/NoteList";
 import css from "./NotesPage.module.css";
 
 export default function NotesClient() {
-  const {
-    data: notes,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ["notes"],
     queryFn: fetchNotes,
   });
@@ -21,7 +17,7 @@ export default function NotesClient() {
   return (
     <section className={css.section}>
       <h1 className={css.title}>Notes List</h1>
-      {notes?.length > 0 && <NoteList notes={notes} />}
+      {data && data.length > 0 && <NoteList notes={data} />}
     </section>
   );
 }
