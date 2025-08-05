@@ -11,7 +11,7 @@ export default async function NoteDetailsPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = await params; // ✅ await внутри асинхронной функции
+  const { id } = await params; //
 
   const queryClient = new QueryClient();
 
