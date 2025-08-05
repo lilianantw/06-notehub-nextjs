@@ -13,13 +13,12 @@ export interface CreateNotePayload {
 }
 
 const api = axios.create({
-  baseURL: "https://notehub-public.goit.study/api", // ✅ без пробелов
+  baseURL: "https://notehub-public.goit.study/api",
   headers: {
     Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`,
   },
 });
 
-// Отримання всіх нотаток
 export async function fetchNotes(): Promise<FetchNotesResponse> {
   const response = await api.get<FetchNotesResponse>("/notes");
   return response.data;
