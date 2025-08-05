@@ -19,14 +19,7 @@ const api = axios.create({
   },
 });
 
-// export const fetchNotes = async (page = 1, search = "") => {
-//   const response = await api.get<FetchNotesResponse>("/notes", {
-//     params: { page, ...(search && { search }) },
-//   });
-//   return response.data;
-// };
-
-// Отримання всіх нотаток (без пагінації — по завданню)
+// Отримання всіх нотаток
 export async function fetchNotes(): Promise<FetchNotesResponse> {
   const response = await api.get<FetchNotesResponse>("/notes");
   return response.data;
