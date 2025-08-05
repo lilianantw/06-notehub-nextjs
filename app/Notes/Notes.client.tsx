@@ -1,3 +1,4 @@
+// app/notes/NotesClient.tsx
 "use client";
 
 import React, { useState } from "react";
@@ -15,25 +16,22 @@ export default function NotesClient() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [debouncedSearch] = useDebounce(search, 500);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["notes", page, debouncedSearch],
-    queryFn: fetchNotes,
+    queryFn: () => fetchNotes({ page, search: debouncedSearch }),
     placeholderData: keepPreviousData,
   });
 
   const handleSearchChange = (value: string) => {
     setSearch(value);
-    setPage(1); // сбрасываем на первую страницу при поиске
+    setPage(1);
   };
 
   const handlePageChange = ({ selected }: { selected: number }) => {
     const newPage = selected + 1;
-    if (newPage >= 1 && newPage <= 10) {
-      setPage(newPage);
-    }
+    setPage(newPage);
   };
 
   const openModal = () => setIsModalOpen(true);

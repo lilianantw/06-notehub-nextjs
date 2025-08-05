@@ -1,13 +1,10 @@
 "use client";
+
 import { useQuery } from "@tanstack/react-query";
 import { fetchNoteById } from "@/lib/api";
-import { useParams } from "next/navigation";
 import css from "./NoteDetails.module.css";
 
-export default function NoteDetailsClient() {
-  const { id } = useParams();
-  const noteId = Number(id);
-
+export default function NoteDetailsClient({ noteId }: { noteId: number }) {
   const {
     data: note,
     isLoading,
@@ -19,7 +16,7 @@ export default function NoteDetailsClient() {
   });
 
   if (!noteId || isNaN(noteId)) {
-    return <p>Something went wrong.</p>;
+    return <p>Invalid note ID.</p>;
   }
 
   if (isLoading) return <p>Loading, please wait...</p>;

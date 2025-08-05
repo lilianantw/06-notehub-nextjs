@@ -1,3 +1,5 @@
+// lib/api.ts
+
 import axios from "axios";
 import type { Note, NoteTag } from "../types/note";
 
@@ -19,8 +21,17 @@ const api = axios.create({
   },
 });
 
-export async function fetchNotes(): Promise<FetchNotesResponse> {
-  const response = await api.get<FetchNotesResponse>("/notes");
+// ✅ Исправленный fetchNotes с параметрами page и search
+export async function fetchNotes({
+  page = 1,
+  search = "",
+}: {
+  page?: number;
+  search?: string;
+}): Promise<FetchNotesResponse> {
+  const response = await api.get<FetchNotesResponse>("/notes", {
+    params: { page, search },
+  });
   return response.data;
 }
 
