@@ -7,12 +7,10 @@ import { fetchNoteById } from "@/lib/api";
 import NoteDetailsClient from "./NoteDetailsClient";
 import { notFound } from "next/navigation";
 
-export default async function NoteDetailsPage({
-  params,
-}: {
-  params: { id: string };
+export default async function NoteDetailsPage(props: {
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = params;
+  const { id } = await props.params;
   const noteId = parseInt(id, 10);
 
   if (!id || isNaN(noteId) || noteId < 1) {
