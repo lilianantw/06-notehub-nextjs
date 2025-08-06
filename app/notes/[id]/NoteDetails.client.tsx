@@ -6,7 +6,7 @@ import css from "./NoteDetails.module.css";
 import Link from "next/link";
 
 interface NoteDetailsClientProps {
-  noteId: number;
+  noteId: string;
 }
 
 export default function NoteDetailsClient({ noteId }: NoteDetailsClientProps) {
