@@ -1,4 +1,3 @@
-// app/notes/NotesClient.tsx
 "use client";
 
 import React, { useState } from "react";
@@ -11,8 +10,17 @@ import SearchBox from "@/components/SearchBox/SearchBox";
 import Modal from "@/components/Modal/Modal";
 import NoteForm from "@/components/NoteForm/NoteForm";
 import css from "./NotesPage.module.css";
+import { Note } from "@/types/note";
 
-export default function NotesClient() {
+interface NotesClientProps {
+  initialNotes: Note[];
+  initialTotalPages: number;
+}
+
+export default function NotesClient({
+  initialNotes,
+  initialTotalPages,
+}: NotesClientProps) {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,6 +30,10 @@ export default function NotesClient() {
     queryKey: ["notes", page, debouncedSearch],
     queryFn: () => fetchNotes({ page, search: debouncedSearch }),
     placeholderData: keepPreviousData,
+    initialData: {
+      notes: initialNotes,
+      totalPages: initialTotalPages,
+    },
   });
 
   const handleSearchChange = (value: string) => {

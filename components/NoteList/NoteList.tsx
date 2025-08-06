@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 
 import type { Note } from "@/types/note";
 import Link from "next/link";
@@ -6,9 +6,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteNote } from "@/lib/api";
 import css from "./NoteList.module.css";
 
-type NoteListProps = {
+interface NoteListProps {
   notes: Note[];
-};
+}
 
 export default function NoteList({ notes }: NoteListProps) {
   const queryClient = useQueryClient();
@@ -20,7 +20,7 @@ export default function NoteList({ notes }: NoteListProps) {
     },
   });
 
-  const handleDelete = (id: number, e: React.MouseEvent) => {
+  const handleDelete = (id: string, e: React.MouseEvent) => {
     e.preventDefault();
     if (window.confirm("Delete this note? This action cannot be undone.")) {
       removeNote(id);
@@ -37,7 +37,8 @@ export default function NoteList({ notes }: NoteListProps) {
             {note.content.length > 120 ? "…" : ""}
           </p>
           <div className={css.footer}>
-            {note.tag && <span className={css.tag}>{note.tag}</span>}
+            {/* tag завжди показуємо */}
+            <span className={css.tag}>{note.tag}</span>
             <div style={{ display: "flex", gap: "8px", marginLeft: "auto" }}>
               <Link href={`/notes/${note.id}`} className={css.link}>
                 View details
