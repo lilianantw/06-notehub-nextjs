@@ -4,7 +4,7 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { fetchNoteById } from "@/lib/api";
-import NoteDetailsClient from "./NoteDetailsClient";
+import NoteDetailsClient from "./NoteDetails.client";
 import { notFound } from "next/navigation";
 
 export default async function NoteDetailsPage(props: {
