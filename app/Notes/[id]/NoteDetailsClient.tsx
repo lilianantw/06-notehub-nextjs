@@ -3,34 +3,46 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchNoteById } from "@/lib/api";
 import css from "./NoteDetails.module.css";
+import Link from "next/link";
 
-export default function NoteDetailsClient({ noteId }: { noteId: number }) {
+interface NoteDetailsClientProps {
+  noteId: number;
+}
+
+export default function NoteDetailsClient({ noteId }: NoteDetailsClientProps) {
   const {
     data: note,
     isLoading,
-    error,
+    isError,
   } = useQuery({
     queryKey: ["note", noteId],
     queryFn: () => fetchNoteById(noteId),
-    enabled: !!noteId && !isNaN(noteId),
   });
 
-  if (!noteId || isNaN(noteId)) {
-    return <p>Invalid note ID.</p>;
+  if (isLoading) {
+    return <div>Загрузка...</div>;
   }
 
-  if (isLoading) return <p>Loading, please wait...</p>;
-  if (error || !note) return <p>Something went wrong.</p>;
+  if (isError || !note) {
+    return (
+      <div className="p-6 text-center text-red-600">
+        <h2>Ошибка: заметка не найдена</h2>
+        <Link href="/notes" className="text-blue-500 underline">
+          ← Назад
+        </Link>
+      </div>
+    );
+  }
 
   return (
-    <div className={css.container}>
-      <div className={css.item}>
-        <div className={css.header}>
-          <h2>{note.title}</h2>
-        </div>
-        <p className={css.content}>{note.content}</p>
-        <p className={css.date}>{note.createdAt.slice(0, 10)}</p>
-      </div>
+    <div className="p-6 max-w-2xl mx-auto">
+      <h1 className="text-3xl font-bold mb-4">{note.title}</h1>
+      <p className="text-lg text-gray-700 whitespace-pre-wrap">
+        {note.content}
+      </p>
+      <Link href="/notes" className="text-blue-500 underline mt-6 block">
+        ← Назад
+      </Link>
     </div>
   );
 }
