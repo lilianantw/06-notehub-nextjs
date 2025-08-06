@@ -11,22 +11,21 @@ export default async function NoteDetailsPage(props: {
   params: Promise<{ id: string }>;
 }) {
   const { id } = await props.params;
-  const noteId = parseInt(id, 10);
 
-  if (!id || isNaN(noteId) || noteId < 1) {
+  if (!id) {
     notFound();
   }
 
   const queryClient = new QueryClient();
 
   try {
-    const note = await fetchNoteById(noteId);
+    const note = await fetchNoteById(id); // передаем строку
     if (!note || !note.id) {
       notFound();
     }
 
     await queryClient.prefetchQuery({
-      queryKey: ["note", noteId],
+      queryKey: ["note", id],
       queryFn: () => Promise.resolve(note),
     });
   } catch {
@@ -35,7 +34,7 @@ export default async function NoteDetailsPage(props: {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <NoteDetailsClient noteId={noteId} />
+      <NoteDetailsClient noteId={id} /> {/* передаем строку */}
     </HydrationBoundary>
   );
 }
