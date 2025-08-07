@@ -17,6 +17,7 @@ export default function NoteDetailsClient({ noteId }: NoteDetailsClientProps) {
   } = useQuery({
     queryKey: ["note", noteId],
     queryFn: () => fetchNoteById(noteId),
+    refetchOnMount: false, // ✅ добавлено согласно замечанию
   });
 
   if (isLoading) {
