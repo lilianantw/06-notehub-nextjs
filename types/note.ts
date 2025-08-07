@@ -9,6 +9,7 @@ export interface Note {
   createdAt: string; // Дата створення (ISO-рядок)
   updatedAt: string; // Дата оновлення (ISO-рядок)
   tag: NoteTag; // Тег
+  date: string;
 }
 
 // Інтерфейс для створення нотатки

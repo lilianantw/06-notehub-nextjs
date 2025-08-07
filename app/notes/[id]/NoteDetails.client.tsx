@@ -17,7 +17,7 @@ export default function NoteDetailsClient({ noteId }: NoteDetailsClientProps) {
   } = useQuery({
     queryKey: ["note", noteId],
     queryFn: () => fetchNoteById(noteId),
-    refetchOnMount: false, // ✅ добавлено согласно замечанию
+    refetchOnMount: false,
   });
 
   if (isLoading) {
@@ -26,9 +26,9 @@ export default function NoteDetailsClient({ noteId }: NoteDetailsClientProps) {
 
   if (isError || !note) {
     return (
-      <div className="p-6 text-center text-red-600">
-        <h2>Ошибка: заметка не найдена</h2>
-        <Link href="/notes" className="text-blue-500 underline">
+      <div className={css.container}>
+        <h2 className={css.header}>Ошибка: заметка не найдена</h2>
+        <Link href="/notes" className={css.link}>
           ← Назад
         </Link>
       </div>
@@ -36,14 +36,18 @@ export default function NoteDetailsClient({ noteId }: NoteDetailsClientProps) {
   }
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-4">{note.title}</h1>
-      <p className="text-lg text-gray-700 whitespace-pre-wrap">
-        {note.content}
-      </p>
-      <Link href="/notes" className="text-blue-500 underline mt-6 block">
-        ← Назад
-      </Link>
+    <div className={css.container}>
+      <div className={css.item}>
+        <div className={css.header}>
+          <h2>{note.title}</h2>
+        </div>
+        <p className={css.content}>{note.content}</p>
+        <div className={css.date}>{note.date}</div>
+        <div className={css.tag}>{note.tag}</div>
+        <Link href="/notes" className={css.link}>
+          ← Назад
+        </Link>
+      </div>
     </div>
   );
 }
